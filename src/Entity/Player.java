@@ -3,7 +3,10 @@ package Entity;
 import Main.GamePanel;
 import Main.KeyHandler;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Objects;
 
 public class Player extends Entity {
     GamePanel gp;
@@ -20,6 +23,7 @@ public class Player extends Entity {
         speed=5;
 
     }
+
     public void update(){
         if(kh.Up){
             y -= speed;
