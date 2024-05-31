@@ -1,34 +1,62 @@
 public class commandHandler {
-    public commandHandler(){};
+    Gamestate gamestate;
+    public commandHandler(Gamestate gs){
+        this.gamestate = gs;
+    }
 
-    public Command handleCommand(String command){
+    public void handleCommand(String command){
         switch (command.toLowerCase()){
             case "left":
                 System.out.println("GO LEFT");
-                return new COMM();
+                new COMM().execute();
             case "right":
                 System.out.println("GO RIGHT");
-                return new COMM();
+                new COMM().execute();
             case "up":
                 System.out.println("GO UP");
-                return new COMM();
+                new COMM().execute();
             case "down":
                 System.out.println("GO DOWN");
-                return new COMM();
+                new COMM().execute();
             case "attack":
                 System.out.println("ATTACK THE ENEMY");
-                return new COMM();
+                new COMM().execute();
             case "inv":
             case "i":
             case "inventory":
                 System.out.println("SHOW ME THE INVENTORY");
-                return new COMM();
+                new COMM().execute();
             case "q":
             case "quit":
                 System.out.println("QUIT THE GAME");
-                return new COMM();
+                new COMM().execute();;
+            case "easy":
+            case "ez":
+                if (gamestate.difficulty == -1) {
+                    System.out.println("EASY DIFFICULTY");
+                    new COMM().execute();
+                }
+                else{
+                    new InvalidCommand().execute();
+                }
+            case "med":
+            case "medium":
+                if (gamestate.difficulty == -1) {
+                    System.out.println("MEDIUM DIFFICULTY");
+                    new COMM().execute();
+                }
+                else{
+                    new InvalidCommand().execute();
+                }
+            case"hard":
+                if (gamestate.difficulty == -1) {
+                System.out.println("HARD");
+                    new COMM().execute();
+                }
+                else{
+                    new InvalidCommand().execute();
+                }
 
         }
-        return new InvalidCommand();
     }
 }

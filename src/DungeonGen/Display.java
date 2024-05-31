@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 public class Display extends JPanel implements Runnable{
     public String mode = "INV";
-
-    commandHandler handler = new commandHandler();
+    Gamestate gamestate = new Gamestate();
+    commandHandler handler = new commandHandler(gamestate);
     public JFrame window;
     public JPanel textInterface;
     public JPanel inputPanel;
@@ -20,6 +20,7 @@ public class Display extends JPanel implements Runnable{
        window = new JFrame();
        window.setLayout(new GridLayout(0,2));
        window.setSize(1280,720);
+       window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
        textInterface = new JPanel();
        textInterface.setLayout(new BorderLayout());
