@@ -6,21 +6,33 @@ import java.awt.event.ActionListener;
 public class Display extends JPanel implements Runnable{
     public String mode = "INV";
 
+    commandHandler handler = new commandHandler();
+    public JFrame window;
+    public JPanel textInterface;
+    public JPanel inputPanel;
+    public JTextField input;
+    public JTextArea history;
+    public JScrollPane scroller;
+    public JTextArea mapInv;
+    public JButton enterButton;
+
     public void run(){
-       JFrame window = new JFrame();
+       window = new JFrame();
        window.setLayout(new GridLayout(0,2));
        window.setSize(1280,720);
 
-       JPanel TextInterface = new JPanel();
-       TextInterface.setLayout(new BorderLayout());
-       JPanel InputPanel = new JPanel(new FlowLayout());
+       textInterface = new JPanel();
+       textInterface.setLayout(new BorderLayout());
+       inputPanel = new JPanel(new FlowLayout());
 
-       JTextField input = new JTextField(37);
-       JTextArea History = new JTextArea("TESTESTESTESTEST");
-       JButton EnterButton = new JButton("ENTER");
-       EnterButton.setBackground(Color.gray);
-       EnterButton.setForeground(Color.black);
-       EnterButton.addActionListener(new ActionListener() {
+       input = new JTextField(37);
+       history = new JTextArea("TESTESTESTESTEST");
+       scroller = new JScrollPane(history);
+       scroller.setBorder(BorderFactory.createLineBorder(Color.darkGray, 1));
+       enterButton = new JButton("ENTER");
+       enterButton.setBackground(Color.gray);
+       enterButton.setForeground(Color.black);
+       enterButton.addActionListener(new ActionListener() {
            @Override
            public void actionPerformed(ActionEvent e) {
                String text = input.getText();
@@ -28,35 +40,38 @@ public class Display extends JPanel implements Runnable{
 //                   ;//do nothing
                }
                else {
-                   History.append("\n"+text);
+                   history.append("\n"+text);
                    input.setText("");
+                   history.setCaretPosition(history.getDocument().getLength());
                }
            }
        });
 
-       InputPanel.add(input);
-       InputPanel.add(EnterButton);
-       InputPanel.setBackground(Color.black);
-       InputPanel.setForeground(Color.white);
+       inputPanel.add(input);
+       inputPanel.add(enterButton);
+       inputPanel.setBackground(Color.black);
+       inputPanel.setForeground(Color.white);
 
-       History.setBackground(Color.black);
-       History.setForeground(Color.white);
-       TextInterface.add(InputPanel, BorderLayout.SOUTH);
-       TextInterface.add(History, BorderLayout.CENTER);
+       history.setBackground(Color.black);
+       history.setForeground(Color.white);
+       textInterface.add(inputPanel, BorderLayout.SOUTH);
+       textInterface.add(scroller, BorderLayout.CENTER);
 
-       JTextArea MapInv = new JTextArea("THIS IS THE MAP / INVENTORY SCREEN");
-       MapInv.setBackground(Color.decode("#4a1d01"));
-       MapInv.setForeground(Color.yellow);
+       mapInv = new JTextArea("THIS IS THE MAP / INVENTORY SCREEN");
+       mapInv.setBackground(Color.decode("#4a1d01"));
+       mapInv.setForeground(Color.yellow);
        if (this.mode.equals("MAP")){
-           MapInv.setText("WORKING ON MAP");
+           mapInv.setText("WORKING ON MAP");
         } else if (this.mode.equals("INV")) {
-           MapInv.setText("WORKING ON INVENTORY SCREEN");
+           mapInv.setText("WORKING ON INVENTORY SCREEN");
 
        }
 
-        window.add(TextInterface);
-       window.add(MapInv);
+       window.add(textInterface);
+       window.add(mapInv);
        window.setVisible(true);
+       input.requestFocus();
+       window.getRootPane().setDefaultButton(enterButton);
        System.out.println("IN PROGRESS");
     }
 
