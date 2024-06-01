@@ -1,4 +1,4 @@
 # Text adventure Dungeon Crawler  
-  
-## This is a text aventure game that uses procedural generaation to create the map and different floors.
-## It includes a secondary screen to show the map as the player progresses through the dungeon, and to view and interacti with the inventory.
+![8 bit image of a green flame](/src/icon.png)  
+## This is a text aventure game that uses procedural generation to create the map and different floors.
+## It includes a secondary screen to show the map as the player progresses through the dungeon, and to view and interact with the inventory.

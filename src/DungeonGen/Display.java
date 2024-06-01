@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Display extends JPanel implements Runnable{
-    public String mode = "INV";
+    public String mode = "MAP";
     Gamestate gamestate = new Gamestate();
     commandHandler handler = new commandHandler(gamestate);
     String name = new String("");
@@ -27,8 +27,8 @@ public class Display extends JPanel implements Runnable{
        textInterface.setLayout(new BorderLayout());
        inputPanel = new JPanel(new FlowLayout());
 
-       input = new JTextField(37);
-       history = new JTextArea("Enter A name for your adventurer");
+       input = new JTextField(43);
+       history = new JTextArea("Enter a name for your adventurer");
        history.setFont(history.getFont().deriveFont(17f));
        scroller = new JScrollPane(history);
        scroller.setBorder(BorderFactory.createLineBorder(Color.darkGray, 1));
@@ -69,9 +69,9 @@ public class Display extends JPanel implements Runnable{
        mapInv.setBackground(Color.decode("#4a1d01"));
        mapInv.setForeground(Color.yellow);
        if (this.mode.equals("MAP")){
-           mapInv.setText("WORKING ON MAP");
+           mapInv.setText("#TODO - MAP SCREEN");
         } else if (this.mode.equals("INV")) {
-           mapInv.setText("WORKING ON INVENTORY SCREEN");
+           mapInv.setText("# TODO - INVENTORY SCREEN");
 
        }
 
