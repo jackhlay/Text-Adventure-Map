@@ -7,6 +7,7 @@ public class Display extends JPanel implements Runnable{
     public String mode = "INV";
     Gamestate gamestate = new Gamestate();
     commandHandler handler = new commandHandler(gamestate);
+    String name = new String("");
     public JFrame window;
     public JPanel textInterface;
     public JPanel inputPanel;
@@ -27,7 +28,8 @@ public class Display extends JPanel implements Runnable{
        inputPanel = new JPanel(new FlowLayout());
 
        input = new JTextField(37);
-       history = new JTextArea("TESTESTESTESTEST");
+       history = new JTextArea("Enter A name for your adventurer");
+       history.setFont(history.getFont().deriveFont(17f));
        scroller = new JScrollPane(history);
        scroller.setBorder(BorderFactory.createLineBorder(Color.darkGray, 1));
        enterButton = new JButton("ENTER");
@@ -40,10 +42,15 @@ public class Display extends JPanel implements Runnable{
                if(text.equals("")){
 //                   ;//do nothing
                }
-               else {
-                   history.append("\n"+text);
+               if(!name.equals("") && !text.equals("")){
+                   history.append("\n"+name+" > "+text);
                    input.setText("");
                    history.setCaretPosition(history.getDocument().getLength());
+               }
+               if(name.equals("") && !text.equals("")){
+                   name = input.getText();
+                   history.setText("Hello " + name + "! Welcome to the Dungeon!");
+                   input.setText("");
                }
            }
        });
