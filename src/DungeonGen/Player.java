@@ -1,4 +1,6 @@
 public class Player {
+    public String Name;
+    public int[] Location = {999,999};
     public int Level;
     public int Strength;
     public int Dexterity;
@@ -8,6 +10,7 @@ public class Player {
     public String[] Inventory;
 
     public Player(){
+        this.Name = "";
         this.Level = 0;
         this.Strength = 0;
         this.Dexterity = 0;

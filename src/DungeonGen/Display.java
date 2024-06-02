@@ -7,7 +7,7 @@ public class Display extends JPanel implements Runnable{
     public String mode = "MAP";
     Gamestate gamestate = new Gamestate();
     commandHandler handler = new commandHandler(gamestate);
-    String name = new String("");
+    String name = "";
     public JFrame window;
     public JPanel textInterface;
     public JPanel inputPanel;
@@ -18,6 +18,8 @@ public class Display extends JPanel implements Runnable{
     public JButton enterButton;
 
     public void run(){
+       Player p = new Player();
+
        window = new JFrame();
        window.setLayout(new GridLayout(0,2));
        window.setSize(1280,720);
@@ -45,18 +47,26 @@ public class Display extends JPanel implements Runnable{
            @Override
            public void actionPerformed(ActionEvent e) {
                String text = input.getText();
-               if(text.equals("")){
-                   //do nothing
+               if(text.isEmpty()){
+                   ;
                }
-               if(!name.equals("") && !text.equals("")){
+               if(!p.Name.isEmpty() && !text.isEmpty()){
                    history.append("\n"+name+" > "+text);
                    input.setText("");
                }
-               if(name.equals("") && !text.equals("")){
+               if(p.Name.isEmpty() && !text.isEmpty()){
                    name = input.getText();
-                   history.setText("Hello " + name + "! Welcome to the Dungeon!");
+                   p.Name = name;
+                   history.setText("Hello " + p.Name + "! Welcome to the Dungeon!");
+                   history.append("\nPlease choose a difficulty Easy, Medium, or Hard");
                    input.setText("");
                }
+               else if(!text.isEmpty()){
+                   System.out.println("GOING TO THE HANDLER");
+                   String out = handler.handleCommand(text);
+                   history.append("\n"+out);
+                   p.Location[0] = gamestate.currentX;
+                   p.Location[1] = gamestate.currentY;}
            }
        });
 

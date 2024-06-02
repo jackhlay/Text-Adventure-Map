@@ -1,66 +1,67 @@
+import static java.lang.System.exit;
+
 public class commandHandler {
     Gamestate gamestate;
     public commandHandler(Gamestate gs){
         this.gamestate = gs;
     }
 
-    public void handleCommand(String command){//Eventually turn this to return string to put into the console.
+    public String handleCommand(String command){//Eventually turn this to return string to put into the console.
         switch (command.toLowerCase()){
             case "left":
                 System.out.println("GO LEFT");
-                //new COMM().execute();
+                return "GO LEFT";
             case "right":
                 System.out.println("GO RIGHT");
-                //new COMM().execute();
+                return "GO RIGHT";
             case "up":
                 System.out.println("GO UP");
-                //new COMM().execute();
+                return "GO UP";
             case "down":
                 System.out.println("GO DOWN");
-                //new COMM().execute();
+                return "GO DOWN";
             case "attack":
                 System.out.println("ATTACK THE ENEMY");
-                //new COMM().execute();
+                return "ATTACK";
             case "inv":
             case "i":
             case "inventory":
                 System.out.println("SHOW ME THE INVENTORY");
-                //new COMM().execute();
+                return "INVENTORY";
             case "q":
             case "quit":
                 System.out.println("QUIT THE GAME");
-                //new COMM().execute();;
+                exit(1);
             case "easy":
             case "ez":
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 1;
-                    System.out.println("EASY DIFFICULTY");
-                    //new COMM().execute();
+                    gamestate.dungeonGen(5,5);
+                    return "Easy Difficulty Selected";
                 }
                 else{
-                    //new InvalidCommand().execute();
-                }
+                    return "Invalid Command!";                }
             case "med":
             case "medium":
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 2;
-                    System.out.println("MEDIUM DIFFICULTY");
-                    //new COMM().execute();
+                    gamestate.dungeonGen(7,7);
+                    return "Medium Difficulty Selected";
                 }
                 else{
-                    //new InvalidCommand().execute();
+                    return "Invalid Command!";
                 }
             case"hard":
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 3;
-                System.out.println("HARD");
-                    //new COMM().execute();
+                    gamestate.dungeonGen(10,10);
+                    return "Hard Difficulty Selected";
                 }
                 else{
-                    //return "Invalid Command!"
-                    //new InvalidCommand().execute();
+                    return "Invalid Command!";
                 }
-
+            default:
+                return "Invalid Command!";
         }
     }
 }

@@ -4,7 +4,7 @@ public class Room {
     protected boolean hostile;
     protected boolean loot;
     protected Adversary[] Enemies;
-    public Room[] choices = {new entryRoom(), new treasureRoom(), new treasureTrap(), new emptyRoom()};
+//    public Room[] choices = {new entryRoom(), new treasureRoom(), new treasureTrap(), new emptyRoom()};
 
     public Room(char symbol, String type, boolean hostile, boolean loot, Adversary[] enemies) {
         this.symbol = symbol;
@@ -33,14 +33,20 @@ class treasureTrap extends Room{
     }
 }
 
+class encounter extends Room{
+    public encounter(){
+        super('A',"Encounter",true,false,new Adversary[]{new goblin()});
+    }
+}
+
 class emptyRoom extends Room{
     public emptyRoom() {
-        super(' ', "Empty", false, false, new Adversary[0]);
+        super('R', "Empty", false, false, new Adversary[0]);
     }
 }
 
 class wall extends Room{
     public wall(){
-        super('x', "wall",false, false, new Adversary[0]);
+        super('|', "wall",false, false, new Adversary[0]);
     }
 }
