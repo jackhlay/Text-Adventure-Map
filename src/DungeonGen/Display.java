@@ -28,10 +28,16 @@ public class Display extends JPanel implements Runnable{
        inputPanel = new JPanel(new FlowLayout());
 
        input = new JTextField(43);
+
        history = new JTextArea("Enter a name for your adventurer");
-       history.setFont(history.getFont().deriveFont(17f));
+       history.setEditable(false);
+       history.setLineWrap(true);
+       history.setWrapStyleWord(true);
+       history.setFont(history.getFont().deriveFont(19f));
+
        scroller = new JScrollPane(history);
        scroller.setBorder(BorderFactory.createLineBorder(Color.darkGray, 1));
+
        enterButton = new JButton("ENTER");
        enterButton.setBackground(Color.gray);
        enterButton.setForeground(Color.black);
@@ -40,12 +46,11 @@ public class Display extends JPanel implements Runnable{
            public void actionPerformed(ActionEvent e) {
                String text = input.getText();
                if(text.equals("")){
-//                   ;//do nothing
+                   //do nothing
                }
                if(!name.equals("") && !text.equals("")){
                    history.append("\n"+name+" > "+text);
                    input.setText("");
-                   history.setCaretPosition(history.getDocument().getLength());
                }
                if(name.equals("") && !text.equals("")){
                    name = input.getText();

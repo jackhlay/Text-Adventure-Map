@@ -1,31 +1,46 @@
 public class Room {
-    char symbol;
-    String type;
-    boolean hostile;
-    boolean loot;
-    Adversary[] Enemies;
+    protected char symbol;
+    protected String type;
+    protected boolean hostile;
+    protected boolean loot;
+    protected Adversary[] Enemies;
+    public Room[] choices = {new entryRoom(), new treasureRoom(), new treasureTrap(), new emptyRoom()};
+
+    public Room(char symbol, String type, boolean hostile, boolean loot, Adversary[] enemies) {
+        this.symbol = symbol;
+        this.type = type;
+        this.hostile = hostile;
+        this.loot = loot;
+        this.Enemies = enemies;
+    }
 }
 
-class TreasureRoom extends Room{
-    char symbol = 'T';
-    String Type = "Treasure";
-    boolean hostile;
-    boolean loot = true;
-    Adversary[] Enemies = {};
+class entryRoom extends Room{
+    public entryRoom() {
+        super('E', "Entry", false, false, new Adversary[0]);
+    }
 }
 
-class TreasureTrap extends Room{
-    char symbol = 't';
-    String type = "Treasure*";
-    boolean hostile = true;
-    boolean loot = false;
-    Adversary[] Enemies = {new Mimic()};
+class treasureRoom extends Room{
+    public treasureRoom() {
+        super('T', "Treasure", false, true, new Adversary[0]);
+    }
+}
+
+class treasureTrap extends Room{
+    public treasureTrap() {
+        super('t', "Treasure*", true, false, new Adversary[]{new mimic()});
+    }
 }
 
 class emptyRoom extends Room{
-    char symbol = ' ';
-    String type = "Empty";
-    boolean hostile = false;
-    boolean loot = false;
-    Adversary[] Enemies = {};
+    public emptyRoom() {
+        super(' ', "Empty", false, false, new Adversary[0]);
+    }
+}
+
+class wall extends Room{
+    public wall(){
+        super('x', "wall",false, false, new Adversary[0]);
+    }
 }
