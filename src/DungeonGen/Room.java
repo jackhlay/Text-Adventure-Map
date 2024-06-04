@@ -39,6 +39,13 @@ class encounter extends Room{
     }
 }
 
+class bossRoom extends Room{
+    public bossRoom(){
+        super('B',"Boss Room",true,false,new Adversary[]{new manticore()});
+    }
+
+}
+
 class emptyRoom extends Room{
     public emptyRoom() {
         super('e', "Empty", false, false, new Adversary[0]);

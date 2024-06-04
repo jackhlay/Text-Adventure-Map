@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -79,6 +78,12 @@ public class Gamestate {
                 y = origY;
                 continue;
             }
+            if (amountRooms == 1){
+                map[x][y] = new bossRoom();
+                visited[x][y]=true;
+                amountRooms--;
+                continue;
+            }
             if (map[origX][origY].symbol == Choices.get(roomChoice).symbol){
                 map[x][y] = new emptyRoom();
             }else {
@@ -89,8 +94,12 @@ public class Gamestate {
             }
             if(Choices.get(roomChoice).symbol == 't'){
                 traps++;
-                if(traps>3) {
-                    Choices.indexOf(new treasureTrap());
+                if(traps>2) {
+                   for(int i=0; i<Choices.size(); i++){
+                       if(Choices.get(i).getClass() == treasureTrap.class){
+                           Choices.remove(i);
+                       }
+                   }
                 }
             }
             visited[x][y] = true;

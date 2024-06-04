@@ -54,7 +54,10 @@ public class commandHandler {
             case"hard":
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 3;
+                    long startTime = System.currentTimeMillis();
                     gamestate.dungeonGen(7,7);
+                    long endTime = System.currentTimeMillis() - startTime;
+                    System.out.println(endTime + "ms");
                     return "Hard Difficulty Selected";
                 }
                 else{
