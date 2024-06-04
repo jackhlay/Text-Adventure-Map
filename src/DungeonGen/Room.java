@@ -35,13 +35,13 @@ class treasureTrap extends Room{
 
 class encounter extends Room{
     public encounter(){
-        super('A',"Encounter",true,false,new Adversary[]{new goblin()});
+        super('N',"Encounter",true,false,new Adversary[]{new goblin()});
     }
 }
 
 class emptyRoom extends Room{
     public emptyRoom() {
-        super('R', "Empty", false, false, new Adversary[0]);
+        super('e', "Empty", false, false, new Adversary[0]);
     }
 }
 

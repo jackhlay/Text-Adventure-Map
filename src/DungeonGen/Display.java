@@ -7,7 +7,6 @@ public class Display extends JPanel implements Runnable{
     public String mode = "MAP";
     Gamestate gamestate = new Gamestate();
     commandHandler handler = new commandHandler(gamestate);
-    String name = "";
     public JFrame window;
     public JPanel textInterface;
     public JPanel inputPanel;
@@ -48,15 +47,14 @@ public class Display extends JPanel implements Runnable{
            public void actionPerformed(ActionEvent e) {
                String text = input.getText();
                if(text.isEmpty()){
-                   ;
+
                }
                if(!p.Name.isEmpty() && !text.isEmpty()){
-                   history.append("\n"+name+" > "+text);
+                   history.append("\n"+p.Name+" > "+text);
                    input.setText("");
                }
                if(p.Name.isEmpty() && !text.isEmpty()){
-                   name = input.getText();
-                   p.Name = name;
+                   p.Name = input.getText();
                    history.setText("Hello " + p.Name + "! Welcome to the Dungeon!");
                    history.append("\nPlease choose a difficulty Easy, Medium, or Hard");
                    input.setText("");

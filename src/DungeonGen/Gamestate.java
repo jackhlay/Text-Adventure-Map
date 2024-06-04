@@ -1,7 +1,9 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Gamestate {
-    private Room[][] map;
     public int difficulty = 0;
     public int currentX;
     public int currentY;
@@ -22,11 +24,11 @@ public class Gamestate {
 
     public void printMap(Room[][] r){
         for(int j = r[0].length - 1; j >= 0; j--){
-            for(int i = 0; i < r.length; i++){
-                if(r[i][j] != null) {
-                    System.out.printf(r[i][j].symbol + " ");
+            for (Room[] rooms : r) {
+                if (rooms[j] != null) {
+                    System.out.printf(rooms[j].symbol + " ");
                 } else {
-                    System.out.printf("X ");
+                    System.out.print("X ");
                 }
             }
             System.out.println();
@@ -37,20 +39,32 @@ public class Gamestate {
 
     public Room[][] explore(int width, int height, Room[][] map, boolean[][]visited) {
         Random rand = new Random();
+        int amountRooms;
+        int traps=0;
+
+        List<Room> Choices= new ArrayList<Room>();
+        Choices.add(new treasureRoom());
+        Choices.add(new encounter());
+        Choices.add(new treasureTrap());
+        Choices.add(new emptyRoom());
+
+        boolean treasureRoom;
         int origX,origY,x,y;
         if (difficulty == 1) {
             currentX = currentY = origX = origY = x = y = 0;
+            amountRooms = rand.nextInt(9,17);
         } else {
             origX = x = currentX = rand.nextInt(width);
             origY = y = currentY = rand.nextInt(height);
+            amountRooms = rand.nextInt(13,27);
         }
         visited[x][y] = true;
         map[x][y] = new entryRoom();
 
-        int amountRooms = rand.nextInt(7,(int)Math.floor((width*height)/4)>7? (int)Math.floor((width*height)/4): (width*height)/2);
-
         while(amountRooms > 0){
-            switch (rand.nextInt(4)+1){
+            int dir = rand.nextInt(4)+1;
+            int roomChoice = rand.nextInt(Choices.size());
+            switch (dir){
                 case 1:
                     y++; break;//up
                 case 2:
@@ -65,7 +79,20 @@ public class Gamestate {
                 y = origY;
                 continue;
             }
-            map[x][y] = new emptyRoom();
+            if (map[origX][origY].symbol == Choices.get(roomChoice).symbol){
+                map[x][y] = new emptyRoom();
+            }else {
+                map[x][y] = Choices.get(roomChoice);
+            }
+            if(Choices.get(roomChoice).symbol == 'T'){
+                Choices.remove(0);
+            }
+            if(Choices.get(roomChoice).symbol == 't'){
+                traps++;
+                if(traps>3) {
+                    Choices.indexOf(new treasureTrap());
+                }
+            }
             visited[x][y] = true;
             origX = x;
             origY = y;
@@ -89,7 +116,7 @@ public class Gamestate {
         // https://pastebin.com/Nr8PjmKF
         boolean[][] visited = new boolean[width][height];
         Room[][] mapStart = new Room[width][height];
-        map = explore(width, height, mapStart, visited);
+        Room[][] map = explore(width, height, mapStart, visited);
         printMap(map);
 
         if (difficulty > 3){difficulty++;}

@@ -54,7 +54,7 @@ public class commandHandler {
             case"hard":
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 3;
-                    gamestate.dungeonGen(10,10);
+                    gamestate.dungeonGen(7,7);
                     return "Hard Difficulty Selected";
                 }
                 else{
