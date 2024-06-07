@@ -29,7 +29,7 @@ class treasureRoom extends Room{
 
 class treasureTrap extends Room{
     public treasureTrap() {
-        super('t', "Treasure*", true, false, new Adversary[]{new mimic()});
+        super('F', "Treasure*", true, false, new Adversary[]{new mimic()});
     }
 }
 
@@ -54,6 +54,6 @@ class emptyRoom extends Room{
 
 class wall extends Room{
     public wall(){
-        super('|', "wall",false, false, new Adversary[0]);
+        super('X', "wall",false, false, new Adversary[0]);
     }
 }

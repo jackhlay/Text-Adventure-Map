@@ -6,19 +6,10 @@ public class Gamestate {
     public int difficulty = 0;
     public int currentX;
     public int currentY;
+    public Room[][] map;
+    public boolean[][] discovered;
 
     public Gamestate(){
-//        Random rand = new Random();
-//        if((difficulty>0) && (difficulty<4)){
-//            //map = new char[20][20];
-//            map = dungeonGen(20,20);
-//        }
-//        else{
-//            //map = new char[rand.nextInt(37)][rand.nextInt(31)];
-//
-//            map = dungeonGen(rand.nextInt(37), rand.nextInt(31));
-//        }
-
     }
 
     public void printMap(Room[][] r){
@@ -41,13 +32,12 @@ public class Gamestate {
         int amountRooms;
         int traps=0;
 
-        List<Room> Choices= new ArrayList<Room>();
+        List<Room> Choices= new ArrayList<>();
         Choices.add(new treasureRoom());
         Choices.add(new encounter());
         Choices.add(new treasureTrap());
         Choices.add(new emptyRoom());
 
-        boolean treasureRoom;
         int origX,origY,x,y;
         if (difficulty == 1) {
             currentX = currentY = origX = origY = x = y = 0;
@@ -116,6 +106,7 @@ public class Gamestate {
             }
 
         }
+        this.map=map;
         return map;
     }
 
@@ -124,6 +115,7 @@ public class Gamestate {
         // https://gamedev.stackexchange.com/questions/47917/procedural-house-with-rooms-generator
         // https://pastebin.com/Nr8PjmKF
         boolean[][] visited = new boolean[width][height];
+        discovered = new boolean[width][height];
         Room[][] mapStart = new Room[width][height];
         Room[][] map = explore(width, height, mapStart, visited);
         printMap(map);

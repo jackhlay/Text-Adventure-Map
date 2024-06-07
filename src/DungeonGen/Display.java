@@ -19,10 +19,13 @@ public class Display extends JPanel implements Runnable{
     public void run(){
        Player p = new Player();
 
-       window = new JFrame();
+       Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");
+
+       window = new JFrame("Dungeon Crawler");
        window.setLayout(new GridLayout(0,2));
        window.setSize(1280,720);
        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+       window.setIconImage(icon);
 
        textInterface = new JPanel();
        textInterface.setLayout(new BorderLayout());
@@ -64,7 +67,22 @@ public class Display extends JPanel implements Runnable{
                    String out = handler.handleCommand(text);
                    history.append("\n"+out);
                    p.Location[0] = gamestate.currentX;
-                   p.Location[1] = gamestate.currentY;}
+                   p.Location[1] = gamestate.currentY;
+                   gamestate.discovered[gamestate.currentX][gamestate.currentY] = true;
+                   if(text.equalsIgnoreCase("map")){
+                       mode = "MAP";
+                       mapInv.setText("");//eventually turn into map update function
+                       for (int j = gamestate.discovered[0].length - 1; j >= 0; j--) {
+                           for (boolean[] room : gamestate.discovered) {
+                               if (room[j]) {
+                                   mapInv.append(1 + " ");
+                               }
+                               else{mapInv.append(0+" ");}
+                           }
+                           mapInv.append("\n");
+                       }
+                   }
+               }
            }
        });
 
@@ -78,15 +96,11 @@ public class Display extends JPanel implements Runnable{
        textInterface.add(inputPanel, BorderLayout.SOUTH);
        textInterface.add(scroller, BorderLayout.CENTER);
 
-       mapInv = new JTextArea("THIS IS THE MAP / INVENTORY SCREEN");
+       mapInv = new JTextArea();
+       mapInv.setEditable(false);
        mapInv.setBackground(Color.decode("#4a1d01"));
        mapInv.setForeground(Color.yellow);
-       if (this.mode.equals("MAP")){
-           mapInv.setText("#TODO - MAP SCREEN");
-        } else if (this.mode.equals("INV")) {
-           mapInv.setText("# TODO - INVENTORY SCREEN");
-
-       }
+       mapInv.setFont(mapInv.getFont().deriveFont(29f));
 
        window.add(textInterface);
        window.add(mapInv);
