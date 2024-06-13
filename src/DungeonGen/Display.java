@@ -82,6 +82,11 @@ public class Display extends JPanel implements Runnable{
                            mapInv.append("\n");
                        }
                    }
+                   if(text.equalsIgnoreCase("inv")){
+                       mode = "INV";
+                       mapInv.setText("LOL BRUH BROKE FOR REAL");
+                   }
+
                }
            }
        });

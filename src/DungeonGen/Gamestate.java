@@ -51,9 +51,12 @@ public class Gamestate {
         map[x][y] = new entryRoom();
 
         while(amountRooms > 0){
-            int dir = rand.nextInt(4)+1;
+            List<Integer> directions = getDirections(x, y, width, height, visited, map);
+            if(directions.isEmpty()){map[x][y]=new bossRoom(); this.map = map; return map;}
+            int dir = rand.nextInt(directions.size());
             int roomChoice = rand.nextInt(Choices.size());
-            switch (dir){
+            if(directions.isEmpty()){break;}
+            switch (directions.get(dir)){
                 case 1:
                     y++; break;//up
                 case 2:
@@ -63,6 +66,7 @@ public class Gamestate {
                 case 4:
                     x--; break;//right
             }
+
             if (x<0|| x>= width || y<0 || y>=height || map[x][y]!=null){
                 x = origX;
                 y = origY;
@@ -117,10 +121,35 @@ public class Gamestate {
         boolean[][] visited = new boolean[width][height];
         discovered = new boolean[width][height];
         Room[][] mapStart = new Room[width][height];
-        Room[][] map = explore(width, height, mapStart, visited);
+        this.map=mapStart;
+        Room[][] map = explore(width, height, this.map, visited);
         printMap(map);
+        System.out.println("Player is currently at: " + (currentX+1) + "," + (currentY+1) + ". IT IS A(N) " + map[currentX][currentY].type + " ROOM");
 
         if (difficulty > 3){difficulty++;}
             return map;
+    }
+
+    public List<Integer> getDirections(int x, int y, int width, int height, boolean[][] visited, Room[][] Map){
+        List<Integer> Directions = new ArrayList<>();
+        if(isValidSpot(x, y+1, width, height, visited, Map)){
+            Directions.add(1);
+        }//up
+        if(isValidSpot(x, y-1, width, height, visited, Map)){
+            Directions.add(2);
+        }//down
+        if(isValidSpot(x+1, y, width, height, visited, Map)){
+            Directions.add(3);
+        }//left
+        if(isValidSpot(x-1, y, width, height, visited, Map)){
+            Directions.add(4);
+        }//right
+
+        return Directions;
+    }
+
+    public boolean isValidSpot(int x, int y, int width, int height, boolean[][] visited, Room[][] Map){
+        return x >= 0 && x< width && y>= 0 && y<height && !visited[x][y] && map[x][y]==null;
         }
+
 }

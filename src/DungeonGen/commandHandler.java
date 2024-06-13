@@ -46,6 +46,7 @@ public class commandHandler {
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 2;
                     gamestate.dungeonGen(7,7);
+                    System.out.println();
                     return "Medium Difficulty Selected";
                 }
                 else{
