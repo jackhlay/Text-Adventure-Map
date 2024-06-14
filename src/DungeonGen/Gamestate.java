@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
 public class Gamestate {
     public int difficulty = 0;
@@ -8,6 +9,7 @@ public class Gamestate {
     public int currentY;
     public Room[][] map;
     public boolean[][] discovered;
+    private Stack<Integer> Moves = new Stack();
 
     public Gamestate(){
     }
@@ -30,6 +32,7 @@ public class Gamestate {
     public Room[][] explore(int width, int height, Room[][] map, boolean[][]visited) {
         Random rand = new Random();
         int amountRooms;
+        int dir;
         int traps=0;
 
         List<Room> Choices= new ArrayList<>();
@@ -52,19 +55,24 @@ public class Gamestate {
 
         while(amountRooms > 0){
             List<Integer> directions = getDirections(x, y, width, height, visited, map);
-            if(directions.isEmpty()){map[x][y]=new bossRoom(); this.map = map; return map;}
-            int dir = rand.nextInt(directions.size());
-            int roomChoice = rand.nextInt(Choices.size());
-            if(directions.isEmpty()){break;}
+            if(directions.isEmpty()){
+                dir = (~Moves.pop() & 0b11);
+                switch (dir){
+                    case 0 -> y++;//up
+                    case 1-> x++;//left
+                    case 2-> x--;//right
+                    case 3-> y--;//down
+                }
+                continue;
+            }
+            else {
+                dir = rand.nextInt(directions.size());
+            }
             switch (directions.get(dir)){
-                case 1:
-                    y++; break;//up
-                case 2:
-                    y--; break;//down
-                case 3:
-                    x++; break;//left
-                case 4:
-                    x--; break;//right
+                case 0 -> {y++; Moves.push(0);}//up
+                case 1-> {x++; Moves.push(1);}//left
+                case 2-> {x--; Moves.push(2);}//right
+                case 3-> {y--; Moves.push(3);}//down
             }
 
             if (x<0|| x>= width || y<0 || y>=height || map[x][y]!=null){
@@ -78,22 +86,19 @@ public class Gamestate {
                 amountRooms--;
                 continue;
             }
+            int roomChoice = rand.nextInt(Choices.size());
             if (map[origX][origY].symbol == Choices.get(roomChoice).symbol){
                 map[x][y] = new emptyRoom();
             }else {
                 map[x][y] = Choices.get(roomChoice);
             }
             if(Choices.get(roomChoice).symbol == 'T'){
-                Choices.remove(0);
+                Choices.remove(roomChoice);
             }
             if(Choices.get(roomChoice).symbol == 't'){
                 traps++;
                 if(traps>2) {
-                   for(int i=0; i<Choices.size(); i++){
-                       if(Choices.get(i).getClass() == treasureTrap.class){
-                           Choices.remove(i);
-                       }
-                   }
+                   Choices.removeIf(room -> room instanceof treasureTrap);
                 }
             }
             visited[x][y] = true;
@@ -110,6 +115,7 @@ public class Gamestate {
             }
 
         }
+        Moves.clear();
         this.map=map;
         return map;
     }
@@ -133,17 +139,17 @@ public class Gamestate {
     public List<Integer> getDirections(int x, int y, int width, int height, boolean[][] visited, Room[][] Map){
         List<Integer> Directions = new ArrayList<>();
         if(isValidSpot(x, y+1, width, height, visited, Map)){
-            Directions.add(1);
+            Directions.add(0);
         }//up
-        if(isValidSpot(x, y-1, width, height, visited, Map)){
-            Directions.add(2);
-        }//down
         if(isValidSpot(x+1, y, width, height, visited, Map)){
-            Directions.add(3);
+            Directions.add(1);
         }//left
         if(isValidSpot(x-1, y, width, height, visited, Map)){
-            Directions.add(4);
+            Directions.add(2);
         }//right
+        if(isValidSpot(x, y-1, width, height, visited, Map)){
+            Directions.add(3);
+        }//down
 
         return Directions;
     }

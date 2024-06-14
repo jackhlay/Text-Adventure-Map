@@ -23,4 +23,11 @@ public class Player {
         this.Gold += n;
     }
 
+//    public static void main(String[] args) {
+//        int ex = 0x0;
+//        System.out.println(ex);
+//        System.out.println(~ex & 0b11);
+        //bit flipping test logic
+//    }
+
 }

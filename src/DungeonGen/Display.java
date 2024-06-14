@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Display extends JPanel implements Runnable{
-    public String mode = "MAP";
+    public String mode = "INV";
     Gamestate gamestate = new Gamestate();
     commandHandler handler = new commandHandler(gamestate);
     public JFrame window;
@@ -69,22 +69,14 @@ public class Display extends JPanel implements Runnable{
                    p.Location[0] = gamestate.currentX;
                    p.Location[1] = gamestate.currentY;
                    gamestate.discovered[gamestate.currentX][gamestate.currentY] = true;
+                   if(mode == "MAP"){updateMap();} else if (mode == "INV") {updateInv();}
                    if(text.equalsIgnoreCase("map")){
                        mode = "MAP";
-                       mapInv.setText("");//eventually turn into map update function
-                       for (int j = gamestate.discovered[0].length - 1; j >= 0; j--) {
-                           for (boolean[] room : gamestate.discovered) {
-                               if (room[j]) {
-                                   mapInv.append(1 + " ");
-                               }
-                               else{mapInv.append(0+" ");}
-                           }
-                           mapInv.append("\n");
-                       }
+                       updateMap();
                    }
                    if(text.equalsIgnoreCase("inv")){
                        mode = "INV";
-                       mapInv.setText("LOL BRUH BROKE FOR REAL");
+                       updateInv();
                    }
 
                }
@@ -113,6 +105,24 @@ public class Display extends JPanel implements Runnable{
        input.requestFocus();
        window.getRootPane().setDefaultButton(enterButton);
        System.out.println("IN PROGRESS");
+    }
+
+    private void updateMap(){
+        mapInv.setText("");
+        for (int j = gamestate.map[0].length-1; j >= 0; j--) {
+            for (int i = 0; i < gamestate.map.length; i++) {
+                if (gamestate.discovered[i][j]) {
+                    mapInv.append(gamestate.map[i][j].symbol + " ");
+                } else {
+                    mapInv.append("? ");
+                }
+            }
+            mapInv.append("\n");
+        }
+    }
+
+    private void updateInv(){
+        mapInv.setText("Ok this is the inventory screen brother");
     }
 
     public static void main(String[] args) {
