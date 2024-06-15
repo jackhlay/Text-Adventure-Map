@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class Display extends JPanel implements Runnable{
     public String mode = "INV";
@@ -63,22 +64,39 @@ public class Display extends JPanel implements Runnable{
                    input.setText("");
                }
                else if(!text.isEmpty()){
-                   System.out.println("GOING TO THE HANDLER");
-                   String out = handler.handleCommand(text);
-                   history.append("\n"+out);
-                   p.Location[0] = gamestate.currentX;
-                   p.Location[1] = gamestate.currentY;
-                   gamestate.discovered[gamestate.currentX][gamestate.currentY] = true;
-                   if(mode == "MAP"){updateMap();} else if (mode == "INV") {updateInv();}
                    if(text.equalsIgnoreCase("map")){
-                       mode = "MAP";
-                       updateMap();
-                   }
-                   if(text.equalsIgnoreCase("inv")){
-                       mode = "INV";
-                       updateInv();
-                   }
+                       if(mode.equals("MAP") || gamestate.map==null){}
+                       else{
+                           mode = "MAP";
+                           updateMap();
+                       }
+                   } else if (text.equalsIgnoreCase("inv")){
+                       if(mode.equals("INV")){}
+                       else {
+                           mode = "INV";
+                           updateInv();
+                       }
+                   }else if (text.equalsIgnoreCase("clear")) {
+                       history.setText(null);
+                   }else {
+                       //System.out.println("GOING TO THE HANDLER");
+                       try {
+                           String out = handler.handleCommand(text);
+                           history.append("\n" + out);
+                           p.Location[0] = gamestate.currentX;
+                           p.Location[1] = gamestate.currentY;
+                           gamestate.discovered[gamestate.currentX][gamestate.currentY] = true;
+                           if (mode.equals("MAP")) {
+                               updateMap();
+                           } else {
+                               updateInv();
+                           }
+                       }
+                       catch (Exception exception){
+                           System.out.println(exception);
+                       }
 
+                   }
                }
            }
        });

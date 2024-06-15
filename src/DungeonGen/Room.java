@@ -1,12 +1,14 @@
+import java.util.ArrayList;
+
 public class Room {
     protected char symbol;
     protected String type;
     protected boolean hostile;
     protected boolean loot;
-    protected Adversary[] Enemies;
+    protected ArrayList<Adversary> Enemies;
 //    public Room[] choices = {new entryRoom(), new treasureRoom(), new treasureTrap(), new emptyRoom()};
 
-    public Room(char symbol, String type, boolean hostile, boolean loot, Adversary[] enemies) {
+    public Room(char symbol, String type, boolean hostile, boolean loot, ArrayList<Adversary> enemies) {
         this.symbol = symbol;
         this.type = type;
         this.hostile = hostile;
@@ -17,43 +19,46 @@ public class Room {
 
 class entryRoom extends Room{
     public entryRoom() {
-        super('E', "Entry", false, false, new Adversary[0]);
+        super('E', "Entry", false, false, new ArrayList<Adversary>());
     }
 }
 
 class treasureRoom extends Room{
     public treasureRoom() {
-        super('T', "Treasure", false, true, new Adversary[0]);
+        super('T', "Treasure", false, true, new ArrayList<Adversary>());
     }
 }
 
 class treasureTrap extends Room{
     public treasureTrap() {
-        super('F', "Treasure*", true, false, new Adversary[]{new mimic()});
+        super('F', "Treasure*", true, false,new ArrayList<Adversary>());
+        Enemies.add(new mimic());
     }
 }
 
 class encounter extends Room{
     public encounter(){
-        super('N',"Encounter",true,false,new Adversary[]{new goblin()});
+        super('N',"Encounter",true,false,new ArrayList<Adversary>());
+        Enemies.add(new goblin());
     }
 }
 
 class bossRoom extends Room{
     public bossRoom(){
-        super('B',"Boss Room",true,false,new Adversary[]{new manticore()});
+        super('B',"Boss Room",true,false,new ArrayList<Adversary>());
+        Enemies.add(new manticore());
     }
 
 }
 
 class emptyRoom extends Room{
     public emptyRoom() {
-        super('e', "Empty", false, false, new Adversary[0]);
+        super('e', "Empty", false, false, new ArrayList<Adversary>());
     }
 }
 
 class wall extends Room{
     public wall(){
-        super('X', "wall",false, false, new Adversary[0]);
+        super('X', "wall",false, false, new ArrayList<Adversary>());
     }
 }
