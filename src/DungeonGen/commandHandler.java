@@ -14,28 +14,28 @@ public class commandHandler {
 //                System.out.println("GO LEFT");
                 if(canLeave(gamestate.currentX-1, gamestate.currentY)) {
                     gamestate.currentX--;
-                    return "GOING LEFT";
+                    return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
                 return "CAN NOT ESCAPE";
             case "right":
 //                System.out.println("GO RIGHT");
                 if(canLeave(gamestate.currentX+1, gamestate.currentY)) {
                     gamestate.currentX++;
-                    return "GOING RIGHT";
+                    return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
                 return "CAN NOT ESCAPE";
             case "up":
 //                System.out.println("GO UP");
                 if(canLeave(gamestate.currentX, gamestate.currentY+1)) {
                     gamestate.currentY++;
-                    return "GOING UP";
+                    return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
                 return "CAN NOT ESCAPE";
             case "down":
 //                System.out.println("GO DOWN");
                 if(canLeave(gamestate.currentX, gamestate.currentY-1)) {
                     gamestate.currentY--;
-                    return "GOING down";
+                    return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
                 return "CAN NOT ESCAPE";
             case "attack":
@@ -46,6 +46,25 @@ public class commandHandler {
             case "inventory":
                 System.out.println("SHOW ME THE INVENTORY");
                 return "INVENTORY";
+            case "yes":
+                if(gamestate.map[gamestate.currentX][gamestate.currentY].type.equalsIgnoreCase("Treasure")){
+                return "You open the chest";
+                }else if(gamestate.map[gamestate.currentX][gamestate.currentY].type.equalsIgnoreCase("Treasure*")){
+                    if(!gamestate.map[gamestate.currentX][gamestate.currentY].loot){
+                        return "The Chest is empty";
+                    }
+                return "It was a trap! The Chest was a mimic! Prepare to fight!";
+                }
+                return"wym?";
+            case "no":
+                if(gamestate.map[gamestate.currentX][gamestate.currentY].type.equals("Treasure")){
+                    return "You ignore the chest";
+                }else if(gamestate.map[gamestate.currentX][gamestate.currentY].type.equals("Treasure*")){
+                    gamestate.map[gamestate.currentX][gamestate.currentY].Enemies.clear();
+                    gamestate.map[gamestate.currentX][gamestate.currentY].loot = false;
+                    return "You ignore the chest";
+                }
+                return"wym?";
             case "q":
             case "quit":
                 System.out.println("QUIT THE GAME");
@@ -107,10 +126,10 @@ public class commandHandler {
     private String roomAnnouncement(Room r){
         switch (r.type){
             case "Entry": return "You have entered the Entry room of the Dungeon";
-            case "Treasure": return "You walk accross the threshold, and see a Chest";
-            case "Treasure*": return "You cross the threshold, and see a Chest, ";
-            case "Encounter": return "You have encountered a(n) " + r.Enemies.get(0) + " you must face them hand to hand!";
-            case "Boss Room": return "You have stumbled into a boss room, A " + r.Enemies.get(0) + " stands before you, seething, with bad intentions";
+            case "Treasure": return "You cross the threshold, and see a Chest. Do you raid it?";
+            case "Treasure*": return "You cross the threshold, and see a Chest, Do you raid it?";
+            case "Encounter": return "You have encountered a(n) " + r.Enemies.get(0).type + "! You must face them hand to hand!";
+            case "Boss Room": return "You have stumbled into a boss room, A " + r.Enemies.get(0).type + " stands before you, seething, with bad intentions";
             case "Empty": return "You've entered a hallway, nothing in sight";
             default: return "N/A";
         }
