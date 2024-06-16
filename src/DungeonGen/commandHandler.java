@@ -109,7 +109,7 @@ public class commandHandler {
             case "Entry": return "You have entered the Entry room of the Dungeon";
             case "Treasure": return "You walk accross the threshold, and see a Chest";
             case "Treasure*": return "You cross the threshold, and see a Chest, ";
-            case "Encounter": return "You have encountered a(n) " + r.Enemies.get(0) + " "
+            case "Encounter": return "You have encountered a(n) " + r.Enemies.get(0) + " you must face them hand to hand!";
             case "Boss Room": return "You have stumbled into a boss room, A " + r.Enemies.get(0) + " stands before you, seething, with bad intentions";
             case "Empty": return "You've entered a hallway, nothing in sight";
             default: return "N/A";
