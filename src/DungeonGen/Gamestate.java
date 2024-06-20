@@ -10,8 +10,10 @@ public class Gamestate {
     public Room[][] map;
     public boolean[][] discovered;
     private Stack<Integer> Moves = new Stack();
+    public Player Player;
 
     public Gamestate(){
+        Player= new Player();
     }
 
     public void printMap(Room[][] r){

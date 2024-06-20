@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Player {
     public String Name;
     public int[] Location = {999,999};
@@ -6,8 +8,7 @@ public class Player {
     public int Dexterity;
     public int Gold;
     public int armorLevel;
-
-    public String[] Inventory;
+    public ArrayList<String> Inventory;
 
     public Player(){
         this.Name = "";
@@ -16,7 +17,7 @@ public class Player {
         this.Dexterity = 0;
         this.Gold=0;
         this.armorLevel=0;
-        this.Inventory = new String[0];
+        this.Inventory = new ArrayList<String>();
     }
 
     public void addGold(int n){

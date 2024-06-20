@@ -31,7 +31,7 @@ class treasureRoom extends Room{
 
 class treasureTrap extends Room{
     public treasureTrap() {
-        super('F', "Treasure*", true, false,new ArrayList<Adversary>());
+        super('T', "Treasure*", true, false,new ArrayList<Adversary>());
         Enemies.add(new mimic());
     }
 }

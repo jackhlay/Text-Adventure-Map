@@ -74,6 +74,9 @@ public class commandHandler {
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 1;
                     gamestate.dungeonGen(5,5);
+                    gamestate.Player.Inventory.add("Sword");
+                    gamestate.Player.Inventory.add("Helmet");
+                    gamestate.Player.Inventory.add("Chestplate");
                     return "Easy Difficulty Selected";
                 }
                 else{
@@ -84,6 +87,8 @@ public class commandHandler {
                     gamestate.difficulty = 2;
                     gamestate.dungeonGen(7,7);
                     System.out.println();
+                    gamestate.Player.Inventory.add("Sword");
+                    gamestate.Player.Inventory.add("Helmet");
                     return "Medium Difficulty Selected";
                 }
                 else{
@@ -93,6 +98,7 @@ public class commandHandler {
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 3;
                     gamestate.dungeonGen(7,7);
+                    gamestate.Player.Inventory.add("Sword");
                     return "Hard Difficulty Selected";
                 }
                 else{
@@ -126,7 +132,7 @@ public class commandHandler {
     private String roomAnnouncement(Room r){
         switch (r.type){
             case "Entry": return "You have entered the Entry room of the Dungeon";
-            case "Treasure": return "You cross the threshold, and see a Chest. Do you raid it?";
+            case "Treasure": return "You cross the threshold, and see a Chest! Do you raid it?";
             case "Treasure*": return "You cross the threshold, and see a Chest, Do you raid it?";
             case "Encounter": return "You have encountered a(n) " + r.Enemies.get(0).type + "! You must face them hand to hand!";
             case "Boss Room": return "You have stumbled into a boss room, A " + r.Enemies.get(0).type + " stands before you, seething, with bad intentions";

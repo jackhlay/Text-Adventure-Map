@@ -13,11 +13,11 @@ public class Display extends JPanel implements Runnable{
     public JTextField input;
     public JTextArea history;
     public JScrollPane scroller;
-    public JTextArea mapInv;
+    public JTextPane mapInv;
     public JButton enterButton;
 
     public void run(){
-       Player p = new Player();
+        Player p = gamestate.Player;
 
        Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");
 
@@ -63,13 +63,13 @@ public class Display extends JPanel implements Runnable{
                    input.setText("");
                }
                else if(!text.isEmpty()){
-                   if(text.equalsIgnoreCase("map")){
+                   if(text.equalsIgnoreCase("map") && !mode.equals("ENCOUNTER")){
                        if(mode.equals("MAP") || gamestate.map==null){}
                        else{
                            mode = "MAP";
                            updateMap();
                        }
-                   } else if (text.equalsIgnoreCase("inv")){
+                   } else if (text.equalsIgnoreCase("inv") && !mode.equals("ENCOUNTER")){
                        if(mode.equals("INV")){}
                        else {
                            mode = "INV";
@@ -85,9 +85,13 @@ public class Display extends JPanel implements Runnable{
                            p.Location[0] = gamestate.currentX;
                            p.Location[1] = gamestate.currentY;
                            gamestate.discovered[gamestate.currentX][gamestate.currentY] = true;
+                           if(gamestate.map[gamestate.currentX][gamestate.currentY].symbol == 'N'){
+                               mode = "ENCOUNTER";
+                               updateEnemyImage();
+                           }
                            if (mode.equals("MAP")) {
                                updateMap();
-                           } else {
+                           } else if (mode.equals("INV")){
                                updateInv();
                            }
                        }
@@ -110,7 +114,7 @@ public class Display extends JPanel implements Runnable{
        textInterface.add(inputPanel, BorderLayout.SOUTH);
        textInterface.add(scroller, BorderLayout.CENTER);
 
-       mapInv = new JTextArea();
+       mapInv = new JTextPane();
        mapInv.setEditable(false);
        mapInv.setBackground(Color.decode("#4a1d01"));
        mapInv.setForeground(Color.yellow);
@@ -124,22 +128,41 @@ public class Display extends JPanel implements Runnable{
        System.out.println("IN PROGRESS");
     }
 
-    private void updateMap(){
-        mapInv.setText("");
-        for (int j = gamestate.map[0].length-1; j >= 0; j--) {
+    private void updateMap() {
+        StringBuilder content = new StringBuilder("<html><body style='text-align: center; color: yellow; font-size: 29px; font-family: monospace;'>");
+        content.append("<br><br><br>");
+        for (int j = gamestate.map[0].length - 1; j >= 0; j--) {
+            content.append("<div>");
             for (int i = 0; i < gamestate.map.length; i++) {
                 if (gamestate.discovered[i][j]) {
-                    mapInv.append(gamestate.map[i][j].symbol + " ");
+                    content.append(gamestate.map[i][j].symbol).append(" ");
                 } else {
-                    mapInv.append("? ");
+                    content.append("? ");
                 }
             }
-            mapInv.append("\n");
+            content.append("</div>");
         }
+
+        content.append("</body></html>");
+        mapInv.setContentType("text/html");
+        mapInv.setText(content.toString());
     }
+
 
     private void updateInv(){
         mapInv.setText("Ok this is the inventory screen brother");
+    }
+
+    private void updateEnemyImage() {
+        String imagePath = "enemies/manticore.png"; // Update this path to your image file
+
+        // Construct the HTML content with CSS styles for image scaling
+        String content = "<html><body style='text-align: center;'><br><br>";
+        content += "<img src='file:" + imagePath + "' style='max-width: 100%; max-height: 100%;'>";
+        content += "</body></html>";
+
+        mapInv.setContentType("text/html");
+        mapInv.setText(content);
     }
 
     public static void main(String[] args) {
