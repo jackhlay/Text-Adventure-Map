@@ -149,8 +149,19 @@ public class Display extends JPanel implements Runnable{
     }
 
 
-    private void updateInv(){
-        mapInv.setText("Ok this is the inventory screen brother");
+    private void updateInv() {
+        StringBuilder content = new StringBuilder("<html><body style='text-align: center; color: yellow; font-size: 29px; font-family: monospace;'>");
+        content.append("<br><br>");
+        content.append("INVENTORY");
+        content.append("<br>");
+        for (int i = 0; i < gamestate.Player.Inventory.size(); i++) {
+            content.append("<div>");
+            content.append(gamestate.Player.Inventory.get(i));
+            content.append("</div>");
+        }
+        content.append("</body></html>");
+        mapInv.setContentType("text/html");
+        mapInv.setText(content.toString());
     }
 
     private void updateEnemyImage() {
