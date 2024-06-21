@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Random;
 
 import static java.lang.System.exit;
@@ -12,28 +13,28 @@ public class commandHandler {
         switch (command.toLowerCase()){
             case "left":
 //                System.out.println("GO LEFT");
-                if(canLeave(gamestate.currentX-1, gamestate.currentY)) {
+                if(canLeave(gamestate.currentX, gamestate.currentY, "left")) {
                     gamestate.currentX--;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
                 return "CAN NOT ESCAPE";
             case "right":
 //                System.out.println("GO RIGHT");
-                if(canLeave(gamestate.currentX+1, gamestate.currentY)) {
+                if(canLeave(gamestate.currentX, gamestate.currentY, "right")) {
                     gamestate.currentX++;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
                 return "CAN NOT ESCAPE";
             case "up":
 //                System.out.println("GO UP");
-                if(canLeave(gamestate.currentX, gamestate.currentY+1)) {
+                if(canLeave(gamestate.currentX, gamestate.currentY, "up")) {
                     gamestate.currentY++;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
                 return "CAN NOT ESCAPE";
             case "down":
 //                System.out.println("GO DOWN");
-                if(canLeave(gamestate.currentX, gamestate.currentY-1)) {
+                if(canLeave(gamestate.currentX, gamestate.currentY, "down")) {
                     gamestate.currentY--;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
@@ -115,15 +116,19 @@ public class commandHandler {
         }
     }
 
-    private boolean canLeave(int x, int y){
+    private boolean canLeave(int x, int y, String dir){
         int height = gamestate.map.length;
         int width = gamestate.map[0].length;
-        if(x>=0 && y>=0 && x<width && y<height) {
-            if (gamestate.map[x][y].symbol == 'X') {
+        int newx = (dir.equals("left")) ? x-1 : (dir.equals("right")) ? x+1 : x;
+        int newy = (dir.equals("down")) ? y-1 : (dir.equals("up")) ? y+1 : y;
+        if (gamestate.map[x][y].hostile) {
+            return gamestate.map[x][y].Enemies.isEmpty();
+        }
+
+        if(newx>=0 && newy>=0 && newx<width && newy<height) {
+
+            if (gamestate.map[newx][newy].symbol == 'X') {
                 return false;
-            }
-            if (gamestate.map[x][y].hostile) {
-                return gamestate.map[gamestate.currentX][gamestate.currentY].Enemies.isEmpty();
             }
         }
         return true;

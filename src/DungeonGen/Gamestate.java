@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Stack;
+import java.util.*;
 
 public class Gamestate {
     public int difficulty = 0;
@@ -11,9 +8,36 @@ public class Gamestate {
     public boolean[][] discovered;
     private Stack<Integer> Moves = new Stack();
     public Player Player;
+    public Map<String,String> getEnemy = new HashMap<>();
+    public ArrayList<Adversary> t1Enemies = new ArrayList<>();
+    public ArrayList<Adversary> t2Enemies = new ArrayList<>();
+    public ArrayList<Adversary> t3Enemies = new ArrayList<>();
+    public ArrayList<Adversary> bosses = new ArrayList<>();
 
     public Gamestate(){
         Player= new Player();
+        getEnemy.put("Goblin", "enemies/goblin.png");
+        getEnemy.put("Orc", "enemies/goblin.png");
+        getEnemy.put("Zombie","enemies/zombie.png");
+        getEnemy.put("Skeleton", "enemies/skeleton.png");
+        getEnemy.put("Spider", "enemies/medspider.png");
+        getEnemy.put("Wizard", "enemies/wizard.png");
+        getEnemy.put("Necromancer", "enemies/wizard.png");
+        getEnemy.put("Fire Elemental", "icon.png");
+        getEnemy.put("Shape Shifter", "icon.png");
+        getEnemy.put("Void Walker", "icon.png");
+        getEnemy.put("Sorcerer", "enemies/sorcerer.png");
+        getEnemy.put("Lich", "enemies/sorcerer.png");
+        getEnemy.put("Dragon", "enemies/dragon.png");
+        getEnemy.put("Golem", "icon.png");
+        getEnemy.put("Manticore", "enemies/manticore.png");
+        getEnemy.put("Basilisk", "enemies/Basilisk.png");
+        getEnemy.put("Mimic", "enemies/chest.png");
+
+        Collections.addAll(t1Enemies, new goblin(), new orc(), new zombie(), new skeleton());
+        Collections.addAll(t2Enemies, new medSpider(), new wizard(), new necromancer());
+        Collections.addAll(t3Enemies, new fireElemental(), new shapeshifter(), new voidwalker(), new sorcerer());
+        Collections.addAll(bosses, new dragon(), new golem(), new manticore(), new basilisk());
     }
 
     public void printMap(Room[][] r){
@@ -89,10 +113,30 @@ public class Gamestate {
                 continue;
             }
             int roomChoice = rand.nextInt(Choices.size());
+
             if (map[origX][origY].symbol == Choices.get(roomChoice).symbol){
                 map[x][y] = new emptyRoom();
             }else {
                 map[x][y] = Choices.get(roomChoice);
+            }
+            if(Choices.get(roomChoice).symbol=='N'){
+                if(difficulty==1){
+                    int enemyNum = rand.nextInt(t1Enemies.size());
+                    map[origX][origY].Enemies.add(t1Enemies.get(enemyNum));
+
+                } else if (difficulty==2) {
+                    int enemyNum = rand.nextInt(t2Enemies.size());
+                    map[origX][origY].Enemies.add(t2Enemies.get(enemyNum));
+
+                } else if (difficulty >=3) {
+                    int enemyNum = rand.nextInt(t3Enemies.size());
+                    map[origX][origY].Enemies.add(t3Enemies.get(enemyNum));
+
+                }
+            }
+            if(Choices.get(roomChoice).symbol=='B'){
+                int enemyNum = rand.nextInt(bosses.size());
+                map[origX][origY].Enemies.add(bosses.get(enemyNum));
             }
             if(Choices.get(roomChoice).symbol == 'T'){
                 Choices.remove(roomChoice);

@@ -39,14 +39,12 @@ class treasureTrap extends Room{
 class encounter extends Room{
     public encounter(){
         super('N',"Encounter",true,false,new ArrayList<Adversary>());
-        Enemies.add(new goblin());
     }
 }
 
 class bossRoom extends Room{
     public bossRoom(){
         super('B',"Boss Room",true,false,new ArrayList<Adversary>());
-        Enemies.add(new manticore());
     }
 
 }

@@ -151,7 +151,7 @@ public class Display extends JPanel implements Runnable{
 
     private void updateInv() {
         StringBuilder content = new StringBuilder("<html><body style='text-align: center; color: yellow; font-size: 29px; font-family: monospace;'>");
-        content.append("<br><br>");
+        content.append("<br>");
         content.append("INVENTORY");
         content.append("<br>");
         for (int i = 0; i < gamestate.Player.Inventory.size(); i++) {
@@ -165,11 +165,13 @@ public class Display extends JPanel implements Runnable{
     }
 
     private void updateEnemyImage() {
-        String imagePath = "enemies/manticore.png"; // Update this path to your image file
+        Adversary a = gamestate.map[gamestate.currentX][gamestate.currentY].Enemies.get(0);
+        String imagePath = gamestate.getEnemy.get(a.type);
 
-        // Construct the HTML content with CSS styles for image scaling
-        String content = "<html><body style='text-align: center;'><br><br>";
+        String content = "<html><body style='text-align: center; color: yellow; font-size: 29px; font-family: monospace;'><br>";
         content += "<img src='file:" + imagePath + "' style='max-width: 100%; max-height: 100%;'>";
+        content += "<div>" + a.type + "</div>";
+        content += "<div>" + "Health: " + a.health + "</div>";
         content += "</body></html>";
 
         mapInv.setContentType("text/html");
