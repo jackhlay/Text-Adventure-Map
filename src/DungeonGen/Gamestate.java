@@ -8,6 +8,7 @@ public class Gamestate {
     public boolean[][] discovered;
     private Stack<Integer> Moves = new Stack();
     public Player Player;
+    private Map <String, Integer> damageTable =  new HashMap<>();
     public Map<String,String> getEnemy = new HashMap<>();
     public ArrayList<Adversary> t1Enemies = new ArrayList<>();
     public ArrayList<Adversary> t2Enemies = new ArrayList<>();
@@ -33,6 +34,9 @@ public class Gamestate {
         getEnemy.put("Manticore", "enemies/manticore.png");
         getEnemy.put("Basilisk", "enemies/Basilisk.png");
         getEnemy.put("Mimic", "enemies/chest.png");
+
+        damageTable.put("Sword", 7);
+        damageTable.put("Fists", 3);
 
         Collections.addAll(t1Enemies, new goblin(), new orc(), new zombie(), new skeleton());
         Collections.addAll(t2Enemies, new medSpider(), new wizard(), new necromancer());
@@ -204,4 +208,84 @@ public class Gamestate {
         return x >= 0 && x< width && y>= 0 && y<height && !visited[x][y] && map[x][y]==null;
         }
 
+    public String attack(int x, int y){
+        Random rand = new Random();
+        if(map==null){return "Choose a difficulty first please)";}
+        if(Player.Health<=0){return "You are dead!";}
+        if(map[x][y].Enemies.isEmpty()){
+            if(Player.equippedWeapon.equals("Sword")){
+                if(rand.nextInt(8192)+1 == 8192){
+                    Player.equippedWeapon = "Fists";
+                    return"You swing your sword, rather recklessly, and it slips from your grip! It clangs against the wall, and falls apart upon impact, you now don't have a sword.";
+                }
+                return"You swing your sword recklessly at the empty room in front of you.";
+            }else {return "You swing your fists aimlessly in the empty room.";}
+        }else{
+            int baseDamage = damageTable.get(Player.equippedWeapon);
+            float critChance = rand.nextFloat();
+            float finalDamage=0;
+            if(Player.equippedWeapon.equals("Sword")){
+                if(critChance<=.1){
+                    finalDamage=baseDamage*2;
+                    map[x][y].Enemies.get(0).health-=finalDamage;
+                    if(map[x][y].Enemies.get(0).health<=0){
+                        String message = "You have slain " + map[x][y].Enemies.get(0).type;
+                        map[x][y].Enemies.remove(0);
+                        return message;
+                    }else {
+                        return "You slice the " + map[x][y].Enemies.get(0).type + " and deal " + finalDamage + " damage\n"+ advAttack(x,y);
+                    }
+                }
+            }else{
+                if (Player.equippedWeapon.equals("Fists")) {
+                    if(critChance <= .05){
+                        finalDamage = (float) (baseDamage * 1.2);
+                    }
+                    map[x][y].Enemies.get(0).health-=finalDamage;
+                    if(map[x][y].Enemies.get(0).health<=0){
+                        String message = "You have slain " + map[x][y].Enemies.get(0).type;
+                        map[x][y].Enemies.remove(0);
+                        return message;
+                    }
+                    else {
+                        return "You punch the " + map[x][y].Enemies.get(0).type + " and deal " + finalDamage + " damage\n" + advAttack(x,y);
+                    }
+                }
+            }
+
+            map[x][y].Enemies.get(0).health-=baseDamage;
+            if(map[x][y].Enemies.get(0).health<=0){
+                String message = "You have slain " + map[x][y].Enemies.get(0).type;
+                map[x][y].Enemies.remove(0);
+                return message;
+
+                }
+            else {
+                return "you deal " + baseDamage + " to the " + map[x][y].Enemies.get(0).type +"\n" + advAttack(x,y);
+            }
+        }
+    }
+
+    public String advAttack(int x, int y){
+        Random rand = new Random();
+        float roll = rand.nextFloat();
+        Adversary enemy = map[x][y].Enemies.get(0);
+        if (roll >= .6){
+            Player.Health -= enemy.attackDamage;
+            if(Player.Health<=0){return "You have been slain!";}
+            else {
+                return enemy.type + " dealt " + enemy.attackDamage + " to you!";
+            }
+        }else if(roll >= .3){
+            Player.Health -= enemy.attackDamage*.6;
+            if(Player.Health<=0){return "You have been slain!";}
+            else {
+                return enemy.type + " dealt " + enemy.attackDamage * .6 + " to you!";
+            }
+        }
+        else {
+            return enemy.type + " missed their attack";
+        }
+
+    }
 }

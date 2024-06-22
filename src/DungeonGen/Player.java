@@ -1,14 +1,17 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
     public String Name;
     public int[] Location = {999,999};
+    public float Health = 50;
     public int Level;
     public int Strength;
     public int Dexterity;
     public int Gold;
     public int armorLevel;
     public ArrayList<String> Inventory;
+    public String equippedWeapon = "";
 
     public Player(){
         this.Name = "";
@@ -28,7 +31,7 @@ public class Player {
 //        int ex = 0x0;
 //        System.out.println(ex);
 //        System.out.println(~ex & 0b11);
-        //bit flipping test logic
+        //bit flipping test logic\
 //    }
 
 }

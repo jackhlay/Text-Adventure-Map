@@ -4,10 +4,10 @@
 ## It includes a secondary screen to show the map as the player progresses through the dungeon, and to view and interact with the inventory.
 
 ## Inventory Screen Example:  
-![](InventoryScreen.PNG)  
+![](/examples/InventoryScreen.PNG)  
 
 ## Map Screen Example:  
-![](mapScreen.PNG)  
+![](/examples/mapScreen.PNG)  
 
 ## Encounter Example:  
-![](Encounter.PNG)
+![](/examples/Encounter.PNG)

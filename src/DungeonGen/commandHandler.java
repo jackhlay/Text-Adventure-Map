@@ -17,46 +17,44 @@ public class commandHandler {
                     gamestate.currentX--;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
-                return "CAN NOT ESCAPE";
+                return "Can't go left";
             case "right":
 //                System.out.println("GO RIGHT");
                 if(canLeave(gamestate.currentX, gamestate.currentY, "right")) {
                     gamestate.currentX++;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
-                return "CAN NOT ESCAPE";
+                return "Can't go right";
             case "up":
 //                System.out.println("GO UP");
                 if(canLeave(gamestate.currentX, gamestate.currentY, "up")) {
                     gamestate.currentY++;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
-                return "CAN NOT ESCAPE";
+                return "Can't go up";
             case "down":
 //                System.out.println("GO DOWN");
                 if(canLeave(gamestate.currentX, gamestate.currentY, "down")) {
                     gamestate.currentY--;
                     return roomAnnouncement(gamestate.map[gamestate.currentX][gamestate.currentY]);
                 }
-                return "CAN NOT ESCAPE";
+                return "Can't go down";
             case "attack":
-                System.out.println("ATTACK THE ENEMY");
-                return "ATTACK";
+                return gamestate.attack(gamestate.currentX, gamestate.currentY);
+
             case "inv":
             case "i":
             case "inventory":
-                System.out.println("SHOW ME THE INVENTORY");
                 return "INVENTORY";
+
             case "yes":
                 if(gamestate.map[gamestate.currentX][gamestate.currentY].type.equalsIgnoreCase("Treasure")){
                 return "You open the chest";
                 }else if(gamestate.map[gamestate.currentX][gamestate.currentY].type.equalsIgnoreCase("Treasure*")){
-                    if(!gamestate.map[gamestate.currentX][gamestate.currentY].loot){
-                        return "The Chest is empty";
-                    }
                 return "It was a trap! The Chest was a mimic! Prepare to fight!";
                 }
                 return"wym?";
+
             case "no":
                 if(gamestate.map[gamestate.currentX][gamestate.currentY].type.equals("Treasure")){
                     return "You ignore the chest";
@@ -66,10 +64,12 @@ public class commandHandler {
                     return "You ignore the chest";
                 }
                 return"wym?";
+
             case "q":
             case "quit":
                 System.out.println("QUIT THE GAME");
                 exit(1);
+
             case "easy":
             case "ez":
                 if (gamestate.difficulty == 0) {
@@ -78,10 +78,13 @@ public class commandHandler {
                     gamestate.Player.Inventory.add("Sword");
                     gamestate.Player.Inventory.add("Helmet");
                     gamestate.Player.Inventory.add("Chestplate");
+                    gamestate.Player.equippedWeapon = "Sword";
                     return "Easy Difficulty Selected";
                 }
                 else{
-                    return "Invalid Command!";                }
+                    return "Invalid Command!";
+                }
+
             case "med":
             case "medium":
                 if (gamestate.difficulty == 0) {
@@ -90,21 +93,25 @@ public class commandHandler {
                     System.out.println();
                     gamestate.Player.Inventory.add("Sword");
                     gamestate.Player.Inventory.add("Helmet");
+                    gamestate.Player.equippedWeapon = "Sword";
                     return "Medium Difficulty Selected";
                 }
                 else{
                     return "Invalid Command!";
                 }
+
             case"hard":
                 if (gamestate.difficulty == 0) {
                     gamestate.difficulty = 3;
                     gamestate.dungeonGen(7,7);
                     gamestate.Player.Inventory.add("Sword");
+                    gamestate.Player.equippedWeapon = "Sword";
                     return "Hard Difficulty Selected";
                 }
                 else{
                     return "Invalid Command!";
                 }
+
             case "map":
                 if(gamestate.map == null){
                     return "Choose a difficulty first";
@@ -121,17 +128,15 @@ public class commandHandler {
         int width = gamestate.map[0].length;
         int newx = (dir.equals("left")) ? x-1 : (dir.equals("right")) ? x+1 : x;
         int newy = (dir.equals("down")) ? y-1 : (dir.equals("up")) ? y+1 : y;
-        if (gamestate.map[x][y].hostile) {
+        if (gamestate.map[x][y].hostile && gamestate.map[newx][newy].symbol != 'X') {
             return gamestate.map[x][y].Enemies.isEmpty();
         }
 
         if(newx>=0 && newy>=0 && newx<width && newy<height) {
 
-            if (gamestate.map[newx][newy].symbol == 'X') {
-                return false;
-            }
+            return gamestate.map[newx][newy].symbol != 'X';
         }
-        return true;
+        return false;
     }
 
     private String roomAnnouncement(Room r){

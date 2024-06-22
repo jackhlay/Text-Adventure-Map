@@ -79,7 +79,7 @@ public class Display extends JPanel implements Runnable{
                        history.setText(null);
                    }else {
                        //System.out.println("GOING TO THE HANDLER");
-                       try {
+//                       try {
                            String out = handler.handleCommand(text);
                            history.append("\n" + out);
                            p.Location[0] = gamestate.currentX;
@@ -94,10 +94,10 @@ public class Display extends JPanel implements Runnable{
                            } else if (mode.equals("INV")){
                                updateInv();
                            }
-                       }
-                       catch (Exception exception){
-                           System.out.println(exception);
-                       }
+//                       }
+//                       catch (Exception exception){
+//                           System.out.println(exception);
+//                       }
 
                    }
                }
@@ -165,17 +165,21 @@ public class Display extends JPanel implements Runnable{
     }
 
     private void updateEnemyImage() {
-        Adversary a = gamestate.map[gamestate.currentX][gamestate.currentY].Enemies.get(0);
-        String imagePath = gamestate.getEnemy.get(a.type);
+        if(gamestate.map[gamestate.currentX][gamestate.currentY].Enemies.isEmpty()){mode = "MAP"; updateMap();}
+        else {
+            Adversary a = gamestate.map[gamestate.currentX][gamestate.currentY].Enemies.get(0);
+            String imagePath = gamestate.getEnemy.get(a.type);
 
-        String content = "<html><body style='text-align: center; color: yellow; font-size: 29px; font-family: monospace;'><br>";
-        content += "<img src='file:" + imagePath + "' style='max-width: 100%; max-height: 100%;'>";
-        content += "<div>" + a.type + "</div>";
-        content += "<div>" + "Health: " + a.health + "</div>";
-        content += "</body></html>";
+            String content = "<html><body style='text-align: center; color: yellow; font-size: 29px; font-family: monospace;'><br>";
+            content += "<img src='file:" + imagePath + "' style='max-width: 100%; max-height: 100%;'>";
+            content += "<div>" + a.type + "</div>";
+            content += "<div>" + "Health: " + a.health + "</div>";
+            content += "<br> <div> Player Health: " + gamestate.Player.Health + "</div>";
+            content += "</body></html>";
 
-        mapInv.setContentType("text/html");
-        mapInv.setText(content);
+            mapInv.setContentType("text/html");
+            mapInv.setText(content);
+        }
     }
 
     public static void main(String[] args) {
